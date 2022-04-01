@@ -41,12 +41,22 @@ const chatSchema = new mongoose.Schema({
 const Chat = mongoose.model("Chat", chatSchema);
 
 // get request to get the user inbox
+app.get("/", function (req, res) {
+  Chat.find({}, { _id: 1, username: 1 }, function (err, inbox) {
+    if (inbox) {
+      res.send(inbox);
+    } else {
+      res.send(err);
+    }
+  });
+});
+
 app.get("/:id", function (req, res) {
   Chat.findOne({ _id: req.params.id }, function (err, inbox) {
     if (inbox) {
       res.send(inbox);
     } else {
-      res.send("user doesnot exist");
+      res.send(err);
     }
   });
 });
@@ -67,7 +77,6 @@ app.post("/sendmessage", function (req, res) {
           user.inbox.push(newMessage);
           await user.save();
           res.send(user);
-
         } else {
           res.send("user not found");
         }
@@ -77,34 +86,58 @@ app.post("/sendmessage", function (req, res) {
 
   async function handleRequest() {
     await sendMessage();
-
   }
   handleRequest();
 });
-
-app.post("/register", function (req, res) {
-  async function saveUser(passwd) {
-    const newUser = new Chat({
+app.post("/login", function (req, res) {
+  Chat.findOne(
+    {
       username: req.body.username,
-      password: passwd,
-      email: req.body.email,
-      inbox: [],
-    });
-    await newUser.save();
-    Chat.findOne(
-      {
-        username: newUser.username,
-        password: newUser.password,
-        email: newUser.email,
-      },
-      function (err, found) {
-        if (found) {
-          res.send("User saved successfully!");
-        } else {
-          res.sned("Not able to save the user");
-        }
+    },
+    function (err, user) {
+      if (user) {
+        bcrypt.compare(req.body.password, user.password, function (err, found) {
+          if (found) {
+            res.send("YAY");
+          } else {
+            res.send("ded");
+          }
+        });
+      } else {
+        res.send("ded");
       }
-    );
+    }
+  );
+});
+app.post("/register", function (req, res) {
+  function saveUser(passwd) {
+    Chat.findOne({ username: req.body.username }, async function (err, found) {
+      if (found) {
+        res.send("username already exists");
+      } else {
+        const newUser = new Chat({
+          username: req.body.username,
+          password: passwd,
+          email: req.body.email,
+          inbox: [],
+        });
+        await newUser.save();
+        Chat.findOne(
+          {
+            username: newUser.username,
+            password: newUser.password,
+            email: newUser.email,
+          },
+          function (err, found) {
+            if (found) {
+              res.send("User saved successfully!");
+            } else {
+              res.send("Error");
+            }
+          }
+        );
+      }
+    });
   }
   bcrypt.hash(req.body.password, saltRounds, function (err, hashPasswd) {
     saveUser(hashPasswd);
