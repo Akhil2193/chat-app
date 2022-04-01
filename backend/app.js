@@ -2,9 +2,9 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
-const { request } = require("express");
+const cors = require("cors");
 const saltRounds = 10;
-const port = 3000;
+const port = 5000;
 
 const app = express();
 
@@ -15,7 +15,13 @@ app.use(
 );
 app.use(express.static("public"));
 app.use(express.json());
-
+app.use(
+  cors({
+      origin: 'http://localhost:3000',
+      methods: 'GET,HEAD,PUT,POST,PATCH,DELETE',
+      credentials: true
+  })
+)
 // connect and initialise database
 const uri =
   "mongodb+srv://akhil:chat-app@cluster0.v9cds.mongodb.net/database?retryWrites=true&w=majority";
