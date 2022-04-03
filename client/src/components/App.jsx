@@ -1,9 +1,9 @@
 import Login from './Login';
-import Users from './Chat/Users';
+import Inbox from './Chat/Inbox';
 export default function App(){
     return (
         <div>
-            <Users />
+            <Inbox id="62467b360abaafaeec543767"/>
         </div>
     )
 }

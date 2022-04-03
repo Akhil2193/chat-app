@@ -1,0 +1,13 @@
+.inbox-container{
+    display: flex;
+    width: 100%;
+    justify-content: center;
+}
+.inbox-container-users{
+    width: 20vw;
+    border: 2px solid green;
+}
+.inbox-container-messages{
+    width: 60vw;
+    border: 2px solid blue;
+}

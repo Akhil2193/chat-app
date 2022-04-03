@@ -3,14 +3,14 @@ import User from './User';
 import axios from "axios";
 
 
-export default function Users() {
+export default function Users(props) {
 
 
   const [users, setUsers] = useState([]);
   useEffect(() => {
     let mounted = true;
     axios
-      .get(`http://localhost:5000/`)
+      .get(`http://localhost:4000/`)
       .then(function (response) {
         if (mounted) {
           const updateUsers = [...response.data];
@@ -27,7 +27,7 @@ export default function Users() {
   return (
     <div className="users-list">
       {users.map((user) => (
-        <User key={user._id} id={user._id} username={user.username} />
+        <User key={user._id} id={user._id} username={user.username} onUserClick={props.onUserClick}/>
       ))}
     </div>
   );

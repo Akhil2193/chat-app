@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const cors = require("cors");
 const saltRounds = 10;
-const port = 5000;
+const port = 4000;
 
 const app = express();
 
@@ -36,12 +36,13 @@ const chatSchema = new mongoose.Schema({
   email: String,
   inbox: [
     {
-      senderid: String,
-      sendername: String,
+      id: String,
+      name: String,
       message: String,
       time: String,
-    },
-  ],
+      sent:Boolean
+    }
+  ]
 });
 
 const Chat = mongoose.model("Chat", chatSchema);
@@ -58,7 +59,7 @@ app.get("/", function (req, res) {
 });
 
 app.get("/:id", function (req, res) {
-  Chat.findOne({ _id: req.params.id }, function (err, inbox) {
+  Chat.findOne({ _id: req.params.id },{password:0,email:0}, function (err, inbox) {
     if (inbox) {
       res.send(inbox);
     } else {
@@ -69,25 +70,47 @@ app.get("/:id", function (req, res) {
 
 app.post("/sendmessage", function (req, res) {
   function sendMessage() {
+  
     Chat.findOne(
       { _id: req.body.toid, username: req.body.toname },
       async function (err, user) {
         const newMessage = {
-          senderid: req.body.fromid,
-          sendername: req.body.fromname,
+          id: req.body.fromid,
+          name: req.body.fromname,
           message: req.body.message,
           time: req.body.time,
+          sent: false
         };
         console.log(newMessage);
         if (user) {
           user.inbox.push(newMessage);
           await user.save();
-          res.send(user);
         } else {
-          res.send("user not found");
+          res.send(err);
         }
       }
     );
+    Chat.findOne(
+      { _id: req.body.fromid, username: req.body.fromname },
+      async function (err, user) {
+        const newMessage = {
+          id: req.body.toid,
+          name: req.body.toname,
+          message: req.body.message,
+          time: req.body.time,
+          sent:true
+        };
+        console.log(newMessage);
+        if (user) {
+          user.inbox.push(newMessage);
+          await user.save();
+
+        } else {
+          res.send(err);
+        }
+      }
+    );
+    res.send("done");
   }
 
   async function handleRequest() {
