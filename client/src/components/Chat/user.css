@@ -1,3 +1,17 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,400;1,300;1,600&display=swap');
+.users-list{
+    background: transparent;
+    overflow: auto;
+}
 .user-list-user{
-    border:2px solid red;
+    font-family: 'Raleway', cursive;
+    padding: 1rem;
+    font-weight: 300;
+    background: transparent;
+    color: #eec9ff;
+    border-bottom: 1px solid #181818;
+
+}
+.user-list-user:hover{
+    cursor: pointer;
 }

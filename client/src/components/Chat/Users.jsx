@@ -27,7 +27,7 @@ export default function Users(props) {
   return (
     <div className="users-list">
       {users.map((user) => (
-        <User key={user._id} id={user._id} username={user.username} onUserClick={props.onUserClick}/>
+        <User key={user._id+"1234"} mainid={props.id} id={user._id} username={user.username} clickedUser={props.clickedUser} onUserClick={props.onUserClick}/>
       ))}
     </div>
   );

@@ -22,17 +22,25 @@ export default function Inbox(props) {
         console.log(error);
       });
     return () => (mounted = false);
-  }, []);
+  }, [props.change]);
+  
   function onUserClick(value){
     setclickedUser(value);
   }
   return (
-    <div className="inbox-container">
+    <div className="inbox">
+      <div className="inbox-header">
+        <span>Chat</span>
+      </div>
+      <div className="inbox-container">
       <div className="inbox-container-users">
-        <Users onUserClick = {onUserClick}/>
+        <div className="inbox-container-heading"> Users</div>
+        <Users key="users" clickedUser={clickedUser} id={props.id} onUserClick = {onUserClick}/>
       </div>
       <div className="inbox-container-messages">
-        {load?<Messages clickedUser={clickedUser} inbox={data.inbox} /> : "Loading..." }
+      <div className="inbox-container-heading" style={{color: '#fcaf45'}}> Inbox</div>
+        {load?<Messages key="messages" id={props.id} makeChangeFalse={props.makeChangeFalse}handleSendMessage={props.handleSendMessage} clickedUser={clickedUser} change={props.change} inbox={data.inbox} /> : "Loading..." }
+      </div>
       </div>
     </div>
   );

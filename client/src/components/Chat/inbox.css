@@ -1,13 +1,60 @@
-.inbox-container{
-    display: flex;
-    width: 100%;
-    justify-content: center;
+@import url("https://fonts.googleapis.com/css2?family=Lavishly+Yours&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,400;1,300;1,600&display=swap');
+.inbox {
+  border-radius: 1rem;
 }
-.inbox-container-users{
-    width: 20vw;
-    border: 2px solid green;
+.inbox-header {
+  width: 80vw;
+  margin: auto;
+  font-family: "Lavishly Yours", cursive;
 }
-.inbox-container-messages{
-    width: 60vw;
-    border: 2px solid blue;
+.inbox-header span {
+  background: rgb(131, 58, 180);
+  font-size: 4rem;
+  background: linear-gradient(
+    90deg,
+    rgba(131, 58, 180, 1) 0%,
+    rgba(253, 29, 29, 1) 50%,
+    rgba(252, 176, 69, 1) 100%
+  );
+  background-clip:text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.inbox-container {
+  display: flex;
+  width: 80vw;
+  height:80vh;
+  margin: auto;
+  justify-content: center;
+  background: 
+    linear-gradient(black, black) padding-box,
+    linear-gradient(
+    90deg,
+    rgba(131, 58, 180, 1) 0%,
+    rgba(253, 29, 29, 1) 50%,
+    rgba(252, 176, 69, 1) 100%
+  ) border-box;
+  border-radius: 1rem;
+  border: 2px solid transparent;
+}
+.inbox-container-users {
+  width: 20vw;
+  border-right: 1px solid #80808059;
+  background-color: transparent;
+}
+.inbox-container-heading{
+    padding: 0.5rem;
+    color: #a03491;
+    background: transparent;
+    border-bottom: 1px solid #80808059;
+    font-size: 1.3rem;
+    font-family: 'Raleway', sans-serif;
+    text-align: center;
+    font-weight: bold;
+}
+.inbox-container-messages {
+  width: 60vw;
+  background-color: transparent;
+  /* border: 2px solid blue; */
 }

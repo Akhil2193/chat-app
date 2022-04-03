@@ -37,9 +37,7 @@ const chatSchema = new mongoose.Schema({
   inbox: [
     {
       id: String,
-      name: String,
       message: String,
-      time: String,
       sent:Boolean
     }
   ]
@@ -72,13 +70,11 @@ app.post("/sendmessage", function (req, res) {
   function sendMessage() {
   
     Chat.findOne(
-      { _id: req.body.toid, username: req.body.toname },
+      { _id: req.body.toid},
       async function (err, user) {
         const newMessage = {
           id: req.body.fromid,
-          name: req.body.fromname,
           message: req.body.message,
-          time: req.body.time,
           sent: false
         };
         console.log(newMessage);
@@ -86,18 +82,16 @@ app.post("/sendmessage", function (req, res) {
           user.inbox.push(newMessage);
           await user.save();
         } else {
-          res.send(err);
+          console.log(err);
         }
       }
     );
     Chat.findOne(
-      { _id: req.body.fromid, username: req.body.fromname },
+      { _id: req.body.fromid},
       async function (err, user) {
         const newMessage = {
           id: req.body.toid,
-          name: req.body.toname,
           message: req.body.message,
-          time: req.body.time,
           sent:true
         };
         console.log(newMessage);
@@ -106,15 +100,15 @@ app.post("/sendmessage", function (req, res) {
           await user.save();
 
         } else {
-          res.send(err);
+          console.log(err);
         }
       }
     );
-    res.send("done");
   }
-
+  
   async function handleRequest() {
     await sendMessage();
+    res.send("done");
   }
   handleRequest();
 });
